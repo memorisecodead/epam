@@ -14,8 +14,8 @@ enum ChooseEdit
 
 struct Student
 {
-	char name[30];
-	char surname[40];
+	std::string name;
+	std::string surname;
 	float score[3];
 };
 
@@ -42,18 +42,18 @@ struct Student
 
 			std::cin.clear();
 			std::cin.ignore(std::cin.rdbuf()->in_avail());
-			std::cout << "Name:\t" << std::endl;
-			std::cin.getline(student_obj[i].name, '\n');
-			std::cout << "Surname:\t" << std::endl;
-			std::cin.getline(student_obj[i].surname, '\n');
-			std::cout << "Score:\t" << std::endl;
+			std::cout << "Name: " << std::setw(3) << std::endl;
+			std::getline(std::cin,student_obj[i].name);
+			std::cout << "Surname: " << std::setw(3) << std::endl;
+			std::getline(std::cin,student_obj[i].surname);
+			std::cout << "Score: "<< std::setw(3) << std::endl;
 			for (int j = 0; j < 3; ++j)
 			{
 				std::cin >> student_obj[i].score[j];
 			}
 			std::cin.clear();
 			std::cin.ignore(std::cin.rdbuf()->in_avail());
-			std::cout << "\n\n\n";
+			std::cout << "\n\n";
 		}
 		return student_obj;
 	}
@@ -61,28 +61,30 @@ struct Student
 	void showData(Student * student_obj, unsigned int & count)
 	{
 		system("cls");
-		std::cout << "---List of Student's---\n";
+		std::cout << "---List of Student's---\n\n";
 		for (int i = 0; i < count; ++i)
 		{
 			std::cout << "Student# " << i + 1 << std::endl;
 
-			std::cout << "Name:\t" << student_obj[i].name << std::endl;
-			std::cout << "Surname:\t" << student_obj[i].surname << std::endl;
+			std::cout << "Name: " << std::setw(3) << student_obj[i].name << std::endl;
+			std::cout << "Surname: " << std::setw(3) << student_obj[i].surname << std::endl;
 			for (int j = 0; j < 3; ++j)
 			{
-				std::cout << "Score:\t" << student_obj[i].score[j] << std::endl;
+				std::cout << "Score: " << std::setw(3) << student_obj[i].score[j] << std::endl;
 			}
+			std::cout << "\n\n";
 		}
 	}
 
 	void countOfLenght(Student * student_obj, unsigned int & count)
 	{
+		system("cls");
 		float summ = 0;
-		float average[3]{};
+		float average[10]{};
 		int countOfSurname = 0;
 		for (int i = 0; i < count; ++i)
 		{
-			int countOfSurname = strlen(student_obj[i].surname) % 4;
+			int countOfSurname = student_obj[i].surname.length() % 4;
 			
 			switch (countOfSurname)
 			{
@@ -93,7 +95,7 @@ struct Student
 						summ += student_obj[i].score[j];
 					}
 					average[i] = summ / 3;
-					std::cout <<"Average score:\t" << i + 1 << ' ' << average[i] << std::endl;
+					std::cout <<"Average score " << std::setw(2) << i + 1 << "#: " << average[i] << std::endl;
 				}
 				break;
 				case (unsigned int)(ChooseEdit::RemainingOne) :
@@ -106,7 +108,7 @@ struct Student
 							max = student_obj[i].score[j];
 						}
 					}
-					std::cout <<"Maximal score:\t" << i + 1 <<' ' << max << std::endl;
+					std::cout <<"Maximal score " <<std::setw(2) << i + 1 <<"#: " << max << std::endl;
 				}
 				break;
 				case (unsigned int)(ChooseEdit::RemainingTwo) :
@@ -119,7 +121,7 @@ struct Student
 							min = student_obj[i].score[j];
 						}
 					}
-					std::cout <<"Minimal score:\t" << i + 1 <<' '<< min << std::endl;
+					std::cout <<"Minimal score " << std::setw(2) << i + 1 << "#: " << min << std::endl;
 				}
 				break;
 				case (unsigned int)(ChooseEdit::RemainingThree) :
@@ -129,9 +131,10 @@ struct Student
 						summ += student_obj[i].score[j];
 					}
 					average[i] = summ;
-					std::cout <<"Sum of scores:\t" << ' ' << average[i] << std::endl;
+					std::cout <<"Sum of scores " << std::setw(2) << i + 1 << "#: " << summ << std::endl;
 				}
 				break;
 			}
 			}
+		system("pause");
 	}
