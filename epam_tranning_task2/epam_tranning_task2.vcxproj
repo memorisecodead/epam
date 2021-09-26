@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="epam_tranning_task2.cpp" />
+    <ClCompile Include="Foo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Foo.h" />

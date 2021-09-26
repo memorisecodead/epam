@@ -3,10 +3,11 @@
 
 int main()
 {
+	MyString str;
 	std::string s;
 	unsigned int count = 0;
 
-	swapOfString(s, count);
+	str.swapOfString(s, count);
 
 	return 0;
 }

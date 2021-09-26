@@ -1,28 +1,29 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <cstring>
 
-void swapOfString(std::string& s, unsigned int& count)
+class MyString
 {
-	std::cout << "Enter a word:" << std::endl;
-	std::getline(std::cin, s);
-	std::cout << "Enter a count of symbol(*):" << std::endl;
-	std::cin >> count;
-	std::cin.clear();
-	std::cin.ignore(std::cin.rdbuf()->in_avail());
+public:
 
-	if (s.length() % 2)
+	MyString();
+	~MyString();
+	MyString(const char * ptr);
+	const char * getStr() const;
+	int getLength() const;
+	void swapOfString(std::string& s, unsigned int& count);
+	std::ostream & showStr(std::ostream& os) const;
+
+	friend std::ostream& operator << (std::ostream& os, const MyString& s)
 	{
-		for (int i = 0; i < s.length() / 2; i++)
-		{
-			std::swap(s[i], s[i + s.length() / 2]);
-		}
-	}
-	else
-	{
-		s.insert(s.length() / 2, count, '*');
+		return s.showStr(os);
 	}
 
-	std::cout << "Your string:" << std::setw(4) << s << std::endl;
-}
+protected:
+	char * str;
+	int count;
+
+};
