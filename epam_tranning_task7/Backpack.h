@@ -18,6 +18,7 @@ public:
 	Item * pushOfItems(Item* items_obj, unsigned int& count);
 	void printItems(unsigned int & count);
 	void pushItemsInBackpack(Item & item, unsigned int& index);
+	void countOfItems(unsigned int& index);
 	~Backpack();
 
 private:
@@ -26,6 +27,5 @@ private:
 	Item * m_item;
 	unsigned int m_weightbp;
 	std::string m_nametag;
+	std::uint32_t m_size;
 };
-
-void countOfItems(unsigned int& index);

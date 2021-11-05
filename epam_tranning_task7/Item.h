@@ -14,5 +14,4 @@ public:
 	unsigned int s_weight;
 	double s_price;
 	std::string s_item;
-	/*unsigned int s_count_of_item;*/
 };

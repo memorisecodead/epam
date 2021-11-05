@@ -7,7 +7,8 @@ int main()
 	unsigned int index = 0;
 	Backpack bp;
 	Item* it = nullptr;
-	countOfItems(index);
+
+	bp.countOfItems(index);
 	bp.addBackPack(bp,index);
 	bp.pushOfItems(it, index);
 	

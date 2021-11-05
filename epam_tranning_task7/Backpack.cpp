@@ -1,7 +1,7 @@
 #include "Backpack.h"
 
 Backpack::Backpack()
-	:m_item(nullptr),m_nametag("Skyrim"),m_weightbp(300),m_backp(nullptr),m_pricebp(0)
+	:m_item(nullptr),m_nametag("Skyrim"),m_weightbp(300),m_backp(nullptr),m_pricebp(0),m_size(0)
 {
 	
 }
@@ -92,34 +92,51 @@ Item* Backpack::pushOfItems(Item * items_obj, unsigned int& count)
 {
 	std::cout << std::endl;
 	std::cout << "Push items in your backpack:" << std::endl;
-	items_obj = new Item[count];
+	items_obj = new Item[count]; 
+	std::string s_fakeitem = "Item 1";
+	double s_fakeprice = 1000;
+	double s_fakeweight = 100;
+
 	for (int i = 0; i < count; ++i)
 	{
 		std::cout << std::endl;
 		std::cin.clear();
 		std::cout << i + 1 << "# Enter a your item: " << std::endl;
+		/*std::getline(std::cin, items_obj[i].s_item);*/
 		std::cin >> items_obj[i].s_item;
+		/*items_obj[i].s_item = s_fakeitem;*/
 		std::cout << "Enter a price of your item: " << std::endl;
 		std::cin >> items_obj[i].s_price;
+		/*items_obj[i].s_price = s_fakeprice;*/
 		std::cout << "Enter a weight of your item: " << std::endl;
 		std::cin >> items_obj[i].s_weight;
+		//items_obj[i].s_weight = s_fakeweight;
 		std::cin.clear();
+		/*s_fakeitem += std::to_string(i);
+		s_fakeprice += 1000;
+		s_fakeweight += 50; */
 	}
+
+ 	system("pause");
+	system("cls");
 
 	for (int i = 0; i < count; ++i)
 	{
 		if ((items_obj[i].s_price + m_pricebp > m_pricebp) && (m_weightbp - items_obj[i].s_weight < m_weightbp))
-		{
-			unsigned int index = i;
-			m_backp->pushItemsInBackpack(items_obj[i], index);
+		{	
+			++m_size;
+			m_backp->pushItemsInBackpack(items_obj[i], m_size);
 			m_pricebp += items_obj[i].s_price;
 			m_weightbp -= items_obj[i].s_weight;
 		}
 		else
 		{
+			system("pause");
+			std::cout << std::endl << std::endl;
 			std::cout << "No space in the backpack" << std::endl;
 			std::cout << "Price of backpack: " << m_pricebp << std::endl;
 			std::cout << "Weight of backpack: " << m_weightbp << std::endl;
+			std::cout << std::endl << std::endl;
 		}
 	}
 
@@ -139,7 +156,7 @@ void Backpack::pushItemsInBackpack(Item & item, unsigned int & index)
 {
 	if (m_item == nullptr)
 	{
-		m_item = new Item[++index];
+		m_item = new Item[++m_size];
 		m_item[0] = item;
 
 		std::cout <<"Item is added:\n" << m_item[0].s_item
@@ -147,27 +164,28 @@ void Backpack::pushItemsInBackpack(Item & item, unsigned int & index)
 	}
 	else
 	{
-		Item * temp_item = new Item[index];
+		Item * temp_item = new Item[m_size];
 
-		for (int i = 0; i < index-1; ++i)
+		for (int i = 0; i < m_size; ++i)
 		{
 			temp_item[i] = m_item[i];
-		}
+	}
 
 		delete[] m_item;
 		m_item = nullptr;
 
-		m_item = new Item[index];
+		m_item = new Item[m_size+1]; 
 
-		for (int i = 0; i < index; ++i)
+		for (int i = 0; i < m_size; ++i)
 		{
 			m_item[i] = temp_item[i];
 		}
 
-		m_item[index-1] = item;
+		++m_size;
+		m_item[m_size - 1] = item;
 
-		std::cout << "Item is added:\n" << m_item[index-1].s_item
-			<< " | " << m_item[index-1].s_weight << " | " << m_item[index-1].s_price << std::endl;
+		std::cout << "Item is added:\n" << m_item[m_size -1].s_item
+			<< " | " << m_item[m_size -1].s_weight << " | " << m_item[m_size -1].s_price << std::endl;
 
 		++index;
 
@@ -184,7 +202,7 @@ Backpack::~Backpack()
 	m_weightbp = 0;
 }
 
-void countOfItems(unsigned int& index)
+void Backpack::countOfItems(unsigned int& index)
 {
 	std::cout << "How many items do you want to add?" << std::endl;
 	std::cin >> index;
