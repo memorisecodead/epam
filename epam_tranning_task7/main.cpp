@@ -12,6 +12,7 @@ int main()
 	bp.pushOfItems(it, index);
 	
 	delete it;
+	it = nullptr;
 
 	return 0;
 }

@@ -128,4 +128,8 @@ void Foo(Student& st, unsigned int& SIZE)
 	}
 
 	system("pause");
+	delete[] temp_st;
+	temp_st = nullptr;
+	delete[] temp_stS;
+	temp_stS = nullptr;
 }
