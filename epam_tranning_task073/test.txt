@@ -1,0 +1,36 @@
+Employee #1
+Name: 
+Stas
+Surname: 
+Mazur
+Sex: 
+Male
+Position: 
+Newbyte
+Salary: 
+1000
+Day: 
+15
+Year: 
+2003
+Month of birthday: 
+January
+
+Employee #2
+Name: 
+Sasha
+Surname: 
+Kasyanchuk
+Sex: 
+Male
+Position: 
+Lead
+Salary: 
+1500
+Day: 
+16
+Year: 
+1999
+Month of birthday: 
+March
+
