@@ -18,18 +18,24 @@
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="TaxiCustom.cpp">
+    <ClCompile Include="ErrorHeader.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Note.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Users.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="myVector.h">
+    <ClInclude Include="customQueue.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="TaxiCustom.h">
+    <ClInclude Include="ErrorHeader.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Users.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Note.h">

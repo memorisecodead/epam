@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{ea2f29f5-a99c-4fab-8ad2-d12eacbd4e08}</ProjectGuid>
-    <RootNamespace>epamtranningtask12</RootNamespace>
+    <ProjectGuid>{6923659d-1f32-4815-807c-80d7e103d91d}</ProjectGuid>
+    <RootNamespace>epamtranningtask016</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -140,13 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Note.cpp" />
-    <ClCompile Include="TaxiCustom.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="myVector.h" />
-    <ClInclude Include="Note.h" />
-    <ClInclude Include="TaxiCustom.h" />
+    <ClInclude Include="..\epam_tranning_task_014\myVector.h" />
+    <ClInclude Include="miniQuest.h" />
+    <ClInclude Include="SimpleExplicit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

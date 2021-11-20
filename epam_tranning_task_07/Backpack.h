@@ -11,14 +11,14 @@ class Backpack
 public:
 	Backpack();
 	void addBackPack(Backpack & crOfbp, unsigned int & count);
-	void editOfBackPack(Item *& items, Backpack & crOfbp, unsigned int& count);
-	void printOfBackPack(Item *& items, Backpack & crOfbp, unsigned int& count);
+	void editOfBackPack(Item *& items, Backpack & crOfbp, unsigned int & count);
+	void printOfBackPack(Item *& items, Backpack & crOfbp, unsigned int & count);
 	void printAllItems(Item *& items, unsigned int & count);
-	void printResult(unsigned int& count);
-	Item * pushOfItems(Item* items_obj, unsigned int& count);
+	void printResult(unsigned int & count);
+	Item * pushOfItems(Item * items_obj, unsigned int & count);
 	void printItems(unsigned int & count);
-	void pushItemsInBackpack(Item & item, unsigned int& index);
-	void countOfItems(unsigned int& index);
+	void pushItemsInBackpack(Item & item, unsigned int & index);
+	void countOfItems(unsigned int & index);
 	~Backpack();
 
 private:
