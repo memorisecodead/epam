@@ -1,47 +1,18 @@
 ﻿#include <iostream>
-#include "customQueue.h"
-#include "ErrorHeader.h"
+#include "myVector.h"
 
 int main()
 {
-	customQueue qq;
-	unsigned int count = 0;
-	int i = 0;
+	//сравнить быстродействие 
+	int count = 10;
 
-	std::cout << "Enter a count of values: ";
-	std::cin >> count;
+	myVector<int> v(count);
 
-	qq.ReferenceSize(count);
+	v.size();
+	v.shakerSort(count);
+	v.sortOfShell(count);
 
-	for (i = 1; i <= count; ++i)
-	{
-		qq.pushValue(i);
-	}
-
-	std::cout << "Main queue:" << std::endl;
-	qq.printQueue();
-	std::cout << std::endl;
-	qq.sizeOfQueue();
-	std::cout << std::endl;
-	std::cout << "Enter a new value: ";
-	std::cin >> i;
-	qq.pushValue(i);
-	std::cout << std::endl;
-	std::cout << "Queue:" << std::endl;
-	qq.printQueue();
-	std::cout << std::endl;
-	std::cout << std::endl;
-	qq.sizeOfQueue();
-	std::cout << std::endl;
-	std::cout << "The first element of queue:" << std::endl;
-	std::cout << qq.frontValue();
-	std::cout << std::endl;
-	std::cout << "The last element of queue:" << std::endl;
-	std::cout << qq.backValue();
-
-	std::cout << std::endl;
-	qq.isEmpty();
-	qq.popValue();
+	v.find(v,28);
 
 	return 0;
 }
