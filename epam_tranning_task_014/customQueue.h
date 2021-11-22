@@ -58,18 +58,6 @@ void customQueue<T>::pushValue(T & index)
 template <typename T>
 void customQueue<T>::popValue()
 {
-	/*if (q_fbeg == q_rend)
-	{
-		std::cout << "Queue is empty!" << std::endl;
-	}
-
-	++q_fbeg;
-
-	if (q_fbeg == q_size)
-	{
-		q_fbeg = 0;
-	}*/
-
 	T el_q = 0;
 	el_q = q_arr[q_rend];
 

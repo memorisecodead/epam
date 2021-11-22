@@ -15,14 +15,15 @@ enum class ChoiceType
 int main()
 {
 	unsigned int choose = 0;
-	unsigned int index = 10;
+	unsigned int index = 3;
 
 	TaxiCustom taxi_obj;
-	myVector<Note> vnt;
 
-	 Note note0("Stas", "Apollo", "BMW", 6666);
-	 Note note1("Sasha", "Unnior", "BMW", 9999);
-	 Note note2("Alexa", "Paragraph", "Audi", 6969);
+	myVector<Note> vnt(static_cast<unsigned int&&>(index));
+
+	Note note0("Stas", "Apollo", "BMW", 6666);
+	Note note1("Sasha", "Unnior", "BMW", 9999);
+	Note note2("Alexa", "Paragraph", "Audi", 6969);
 
 	while (true) //;;
 	{
@@ -71,9 +72,10 @@ int main()
 				taxi_obj.addNote(note1);
 				taxi_obj.addNote(note2);
 
-				/*vnt.push_back(note0);
-				vnt.push_back(note1);*/
-				vnt.insert(2, note2);
+				vnt.push_back(note0);
+				vnt.push_back(note1);
+				vnt.insert(0, note2);
+
 				system("pause");
 				system("cls");
 			}

@@ -7,5 +7,6 @@ int main()
 	Currency* cur = nullptr;
 	cur->ConvertCurrency(d_ratio);
 	delete cur;
+
 	return 0;
 }

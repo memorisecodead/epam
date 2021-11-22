@@ -16,67 +16,6 @@ enum ChooseConvertCurrency
 	EuroConvert
 };
 
-//Currency::Currency()
-//	:m_name_of_currency("unknown"), m_rate(0.0), m_ratio(0.0), m_baseCurr(0)
-//{
-//}
-//
-//Currency::Currency(std::string name, unsigned int basecurr, double ratio, double rate)
-//	:m_name_of_currency(name),m_baseCurr(basecurr),m_ratio(ratio),m_rate(rate)
-//{
-//}
-
-//void Currency::addCurrency(Currency & curr, unsigned int& count)
-//{
-//	if (m_curr == nullptr)
-//	{
-//		m_curr = new Currency[count];
-//		m_curr[0] = curr;
-//
-//		std::cin.clear();
-//		std::getline(std::cin, m_curr[0].m_name_of_currency);
-//		std::cin >> m_curr[0].m_rate >> m_curr[0].m_price >> m_curr[0].m_count;
-//
-//		std::cout << "The first currency " << m_curr[0].m_name_of_currency << " is added:\n "
-//			<< "Rate: " << m_curr[0].m_rate << " Price: " << m_curr[0].m_price << std::endl;
-//	}
-//	else
-//	{
-//		Currency* temp_curr = new Currency[count];
-//
-//		for (int i = 0; i < count; ++i)
-//		{
-//			temp_curr[i] = m_curr[i];
-//		}
-//
-//		delete[] m_curr;
-//		m_curr = nullptr;
-//
-//		m_curr = new Currency[count + 1];
-//
-//		for (int i = 0; i < count; ++i)
-//		{
-//			m_curr[i] = temp_curr[i];
-//		}
-//		m_curr[count] = curr;
-//
-//
-//		std::cout << count + 1 << " currency " << m_curr[count].m_name_of_currency << " is added:\n "
-//			<< "Rate: " << m_curr[count].m_rate << " Price: " << m_curr[count].m_price << std::endl;
-//
-//		++count;
-//
-//		delete[] temp_curr;
-//		temp_curr = nullptr;
-//	}
-//}
-
-//double Currency::ratioOfCurrency(double & coure)
-//{
-//	/*std::cout << "Set up of currency:" << std::endl;*/
-//	
-//}
-
 void Currency::ShowInfoOfRatio(double(*foo)())
 {
 	std::cout << "Currency " << this->m_name_of_currency << " is added:\n "
@@ -92,11 +31,6 @@ Currency::~Currency()
 	m_ratio = 0.0;
 	m_rate = 0.0;
 }
-
-//Dollar::Dollar()
-//	:Currency("Dollar",1000,100,100)
-//{
-//}
 
 Dollar::~Dollar()
 {
@@ -128,11 +62,6 @@ void Currency::ConvertCurrency(double & course)
 			std::cout << "Set up a count of curr (Dollar):" << std::endl;
 			std::cin >> curr;
 			cur->m_baseCurr = curr;
-			/*std::cout << "Set up a count of rate: " << std::endl;
-			std::cin >> rate;
-			cur->m_rate = rate;*/
-		/*	cur->m_ratio = course;
-			cur->money_transfer();*/
 			delete cur;
 		}
 		break;
@@ -143,11 +72,6 @@ void Currency::ConvertCurrency(double & course)
 			std::cout << "Set up a count of curr (Rubels):" << std::endl;
 			std::cin >> curr;
 			cur->m_baseCurr = curr;
-		/*	std::cout << "Set up a count of rate: " << std::endl;
-			std::cin >> rate;
-			cur->m_rate = rate;*/
-		/*	cur->m_ratio = course;
-			cur->money_transfer();*/
 			delete cur;
 		}
 		break;
@@ -158,11 +82,6 @@ void Currency::ConvertCurrency(double & course)
 			std::cout << "Set up a count of curr (Byn):" << std::endl;
 			std::cin >> curr;
 			cur->m_baseCurr = curr;
-		/*	std::cout << "Set up a count of rate: " << std::endl;
-			std::cin >> rate;
-			cur->m_rate = rate;*/
-		/*	cur->m_ratio = course;
-			cur->money_transfer();*/
 			delete cur;
 		}
 		break;
@@ -173,11 +92,6 @@ void Currency::ConvertCurrency(double & course)
 			std::cout << "Set up a count of curr (Euro):" << std::endl;
 			std::cin >> curr;
 			cur->m_baseCurr = curr;
-		/*	std::cout << "Set up a count of rate: " << std::endl;
-			std::cin >> rate;
-			cur->m_rate = rate;*/
-		/*	cur->m_ratio = course;
-			cur->money_transfer();*/
 			delete cur;
 		}
 		break;

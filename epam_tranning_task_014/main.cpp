@@ -42,9 +42,6 @@ int main()
 		{
 			case(unsigned int)(Choose::AddNote) :
 			{
-				/*unsigned int countOfUser = 2;*/
-				/*std::cout << "Enter a count of user:\n";
-				std::cin >> countOfUser;*/
 				system("cls");
 				std::cin.clear();
 				std::cin.ignore(std::cin.rdbuf()->in_avail());
@@ -70,7 +67,6 @@ int main()
 				{
 					tqq.pushValue(user_obj);
 				}
-				/*cqq.printQueue();*/
 
 				system("pause");
 				system("cls");

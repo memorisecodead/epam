@@ -28,18 +28,6 @@ void customQueue::pushValue(int& index)
 
 void customQueue::popValue()
 {
-	/*if (q_fbeg == q_rend)
-	{
-		std::cout << "Queue is empty!" << std::endl;
-	}
-
-	++q_fbeg;
-
-	if (q_fbeg == q_size)
-	{
-		q_fbeg = 0;
-	}*/
-
 	unsigned int el_q = 0;
 	el_q = q_arr[q_rend];
 
@@ -69,7 +57,6 @@ void customQueue::popValue()
 		std::cerr << e.what() << " Going outside the area!" << std::endl;
 		exit(EXIT_FAILURE);
 	}
-
 }
 
 void customQueue::printQueue()

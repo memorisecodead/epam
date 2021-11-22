@@ -2,41 +2,43 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
+#include <string>
+#include <cassert>
 
 template <class T>
 class myVector
 {
 public:
 
+	myVector();
+	myVector(unsigned int && size);
+	myVector(const myVector& v);
+	~myVector();
+
 	class myIterator
 	{
 	public:
 		myIterator(const myVector<T>* v, int index);
-		const T & operator*() const;
-		myIterator & operator++();
-		myIterator & operator++(T) { myIterator r(*this); ++it_index; return r; }
-		bool operator!=(const myIterator & it) const;
+		const T& operator*() const;
+		myIterator& operator++();
+		/*myIterator& operator++(T) { myIterator r(*this); ++it_index; return r; }*/
+		bool operator!=(const myIterator& it) const;
 	private:
 		const myVector<T>* it_vector;
 		int it_index = 0;
 	};
 
-	myVector();
-	myVector(T & size);
-	myVector(const myVector & v);
-	~myVector();
-
-	myVector& operator=(const myVector & v);
+	myVector& operator=(const myVector& v);
 	/*bool operator!=(myVector& rls, myVector& lls);*/
 	T getIndex(const T& value) const;
 	T& operator[](T index) const;
 	T size() const;
 	bool empty();
 
-	void push_back(T && value);
-	myVector& insert(const T & index, T && value);
-	bool pop(const T & index);
-	myVector find(myVector<T>& v, int value);
+	void push_back(T & value); // dd
+	myVector insert(const int index, T & value); // dd+
+	void pop_back(unsigned int & index); // dd
+	myVector find(myVector<T> & v, int value);
 	void clear();
 
 	void summOfMassPastMinEl();
@@ -44,16 +46,17 @@ public:
 	void sortOfShell(int & size);
 
 	void showVector();
-	void printSorted(T * v, int & size);
+	void printSorted(T * v, int& size);
 
 	myIterator begin() const;
 	myIterator end() const;
 
 protected:
-	int m_capacity;
-	T* m_arr;
-	int m_size;
+	unsigned int m_capacity;
+	T * m_arr;
+	unsigned int m_size;
 };
+
 
 template<class T>
 myVector<T>::~myVector()
@@ -72,7 +75,7 @@ void myVector<T>::showVector()
 }
 
 template<class T>
-void myVector<T>::printSorted(T * v, int& size)
+void myVector<T>::printSorted(T* v, int& size)
 {
 	std::cout << "Sort of vector:\n";
 	for (int i = 0; i < size; ++i)
@@ -108,65 +111,89 @@ T& myVector<T>::operator[](T index) const
 }
 
 template<class T>
-void myVector<T>::push_back(T&& value)
+void myVector<T>::push_back(T & value)
 {
+	//TODO: Investigate how to check array size before insert
 	if (m_size == m_capacity)
 	{
-		int capacity = m_capacity * 1.5;
-		T* bufArr = new T[capacity];
+		auto capacity = m_capacity * 2;
+		
+		T* result = new T[capacity];
+
 		for (auto i = 0; i < m_size; ++i)
 		{
-			bufArr[i] = m_arr[i];
+			result[i] = m_arr[i];
 		}
-		delete[] bufArr;
-		m_arr = bufArr;
+
+		delete[] m_arr;
+		m_arr = result;
+
 		m_capacity = capacity;
 	}
-	m_arr[m_size++] = value;
+
+	m_arr[++m_size] = value;	
 }
 
 template<class T>
-myVector<T>& myVector<T>::insert(const T& index, T&& value)/*(const T & index, T && value)*/
+myVector<T> myVector<T>::insert(const int index, T & value)/*(const T & index, T && value)*/
 {
+	T * current = new T[m_capacity];
 
-	myVector<T>* current = new myVector<T>[m_size];
 	for (int i = 0; i < m_size; ++i)
 	{
 		current[i] = m_arr[i];
 	}
-	current[m_size] = value;
 
-	delete[] m_arr;
-	m_arr = new myVector<T>[m_size + 1];
-	for (int i = 0; i < index; ++i)
+	delete [] m_arr;
+	m_arr = nullptr;
+
+	m_arr = new T[m_capacity + 1];
+
+	for (int i = 1; i < index; ++i)
 	{
 		m_arr[i] = current[i];
 	}
+
+	++m_size;
+	m_arr[m_capacity - 1] = value;
+
 	delete[] current;
+	current = nullptr;
+
 	return *this;
 }
 
 template<class T>
-bool myVector<T>::pop(const T& index)
+void myVector<T>::pop_back(unsigned int & index)
 {
-	if (index >= size() || empty())
+	//if (index > m_size || empty())
+	//{
+	//	--m_size;
+	//	return false;
+	//}
+	//for (auto i = index; i < m_size; ++i)
+	//{
+	//	std::swap(m_arr[i], m_arr[i + 1]);
+	//}
+	//
+	//return true;
+	if (m_size == m_capacity)
 	{
-		return false;
+		T* result = new T[m_capacity];
+
+		for (auto i = 0; i < m_size; ++i)
+		{
+			result[i] = m_arr[i];
+		}
+
+		delete[] m_arr;
+		m_arr = result;
 	}
-	for (int i = index; i < size(); ++i)
-	{
-		std::swap(m_arr[i], m_arr[i + 1]);
-	}
-	if (!(m_arr = static_cast<T*>(realloc(m_arr, (size() + 1) * sizeof(T)))))
-	{
-		throw std::cout << "Memory allocation error" << std::endl;
-		--m_size;
-		return true;
-	}
+	m_arr[--m_size];
 }
 
 template<class T>
-T myVector<T>::getIndex(const T& value) const
+T myVector<T>::getIndex(const T & value) const
 {
 	for (int i = 0; i < m_size; ++i)
 	{
@@ -225,11 +252,11 @@ void myVector<T>::shakerSort(int & size)
 		--right;
 	}
 
-	printSorted(m_arr,size);
+	printSorted(m_arr, size);
 }
 
 template<class T>
-void myVector<T>::sortOfShell(int & size)
+void myVector<T>::sortOfShell(int& size)
 {
 	int d, i, j, count;
 	d = size;
@@ -263,7 +290,7 @@ void myVector<T>::clear()
 }
 
 template<class T>
- myVector<T> myVector<T>::find(myVector<T> & v,int value)
+myVector<T> myVector<T>::find(myVector<T>& v, int value)
 {
 	for (auto i : v)
 	{
@@ -271,9 +298,9 @@ template<class T>
 		{
 			std::cout << "In vector element is find: " << value << std::endl;
 			return value;
-		}	
+		}
 	}
-	
+
 	std::cout << "Value isn't find!" << std::endl;
 
 	return value;
@@ -282,7 +309,7 @@ template<class T>
 template<class T>
 T myVector<T>::size() const
 {
-	std::cout << "Size of vector:" << std::setw(4) << m_size 
+	std::cout << "Size of vector:" << std::setw(4) << m_size
 		<< std::endl << std::endl;
 	return m_size;
 }
@@ -290,41 +317,43 @@ T myVector<T>::size() const
 template<class T>
 bool myVector<T>::empty()
 {
-	return m_size = 0 ? true : false;
+	return m_size == 0 ? true : false;
 }
 
 template<class T>
 myVector<T>::myVector()
 {
-	m_arr = nullptr;
 	m_size = 0;
-	m_capacity = 0;
+	m_capacity = m_size * 2;
+	m_arr = new T[m_capacity];
 }
 
 template<class T>
-myVector<T>::myVector(T& size)
+myVector<T>::myVector(unsigned int && size)
 {
 	srand(time(NULL));
-	m_arr = static_cast<T*>(malloc(size * sizeof(T)));
 	m_size = size;
-	for (int i = 0; i < size; i++)
-	{
-		m_arr[i] = rand() % 100 - 50;
-	}
+	m_capacity = size * 2;
+	m_arr = new T[m_capacity];
+
+	//for (int i = 0; i < size; i++)
+	//{
+	//	m_arr[i] = rand() % 100 - 50;
+	//}
 }
 
 template<class T>
 myVector<T>::myVector(const myVector& v)
 {
-	m_arr = static_cast<T*>(malloc(v.size() * sizeof(T)));
-	m_size = v.size();
+	m_size = v.m_size;
+	m_arr = new T[m_capacity];
 
 	std::copy(v.m_arr, v.m_arr + m_size, v.m_arr);
 }
 
 template<class T>
 myVector<T>::myIterator::myIterator(const myVector<T>* v, int index)
-	: it_vector(v),it_index(index)
+	: it_vector(v), it_index(index)
 {
 }
 

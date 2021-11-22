@@ -7,11 +7,9 @@ class Currency
 {
 public:
 	Currency() = default;
-	/*Currency(std::string name, unsigned int basecurr, double ratio, double rate);*/
-	//double ratioOfCurrency(double& coure);
 	void ShowInfoOfRatio(double(*foo)());
 	void ConvertCurrency(double & course);
-	~Currency();
+	virtual ~Currency();
 
 	unsigned int m_baseCurr; //Базовая валюта 
 	double m_ratio; //Ковертация 
@@ -25,13 +23,12 @@ public:
 	virtual void money_transfer() = 0;
 };
 //[Курс]=[конвертация]*[Кратность]/[Базовая валюта]
-//[Курс]=19,40*100/1000=1,94
 
 class Dollar : public Currency 
 {
 public:
 	Dollar() = default;
-	~Dollar();
+	virtual ~Dollar();
 
 	void money_transfer() override
 	{
@@ -44,7 +41,7 @@ class Rubels : public Currency
 {
 public:
 	Rubels() = default;
-	~Rubels();
+	virtual ~Rubels();
 
 	void money_transfer() override
 	{
@@ -58,7 +55,7 @@ class Byn : public Currency
 public:
 
 	Byn() = default;
-	~Byn();
+	virtual ~Byn();
 
 	void money_transfer() override
 	{
@@ -71,7 +68,7 @@ class Euro : public Currency
 {
 public:
 	Euro() = default;
-	~Euro();
+	virtual ~Euro();
 
 	void money_transfer() override
 	{

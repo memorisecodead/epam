@@ -200,9 +200,9 @@ bool TaxiCustom::freeTaxi(unsigned int & index)
 	return tripOfTaxi;
 }
 
-void TaxiCustom::deleteNote(const unsigned int& index)
+void TaxiCustom::deleteNote(const unsigned int & index)
 {
-	if (index > m_countOfDriver || index < m_countOfDriver)
+	if (index > m_countOfDriver)
 	{
 		std::cout << "You coudn't delete note\n";
 		return;

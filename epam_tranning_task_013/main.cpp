@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <chrono>
 #include "myVector.h"
 
 int main()
@@ -6,7 +7,7 @@ int main()
 	//сравнить быстродействие 
 	int count = 10;
 
-	myVector<int> v(count);
+	myVector<int> v(10);
 
 	v.size();
 	v.shakerSort(count);
