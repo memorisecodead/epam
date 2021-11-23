@@ -140,10 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="myString.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\epam_tranning_task_014\myVector.h" />
     <ClInclude Include="miniQuest.h" />
+    <ClInclude Include="myString.h" />
     <ClInclude Include="SimpleExplicit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
