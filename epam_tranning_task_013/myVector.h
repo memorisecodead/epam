@@ -4,6 +4,7 @@
 #include <ctime>
 #include <string>
 #include <cassert>
+#include "Timer.h"
 
 template <class T>
 class myVector
@@ -28,7 +29,7 @@ public:
 		int it_index = 0;
 	};
 
-	myVector& operator=(const myVector& v);
+	myVector& operator=(const myVector<T>& v);
 	/*bool operator!=(myVector& rls, myVector& lls);*/
 	T getIndex(const T& value) const;
 	T& operator[](T index) const;
@@ -39,6 +40,7 @@ public:
 	myVector insert(const int index, T & value); // dd+
 	void pop_back(unsigned int & index); // dd
 	myVector find(myVector<T> & v, int value);
+	void fill_array(myVector<T> arr, const int size);
 	void clear();
 
 	void summOfMassPastMinEl();
@@ -82,7 +84,7 @@ void myVector<T>::printSorted(T* v, int& size)
 	{
 		std::cout << v[i] << " ";
 	}
-	std::cout << std::endl << std::endl;
+	std::cout << std::endl;
 }
 
 template<class T>
@@ -94,11 +96,11 @@ typename myVector<T>::myIterator myVector<T>::begin() const
 template<class T>
 typename myVector<T>::myIterator myVector<T>::end() const
 {
-	return myVector<T>::myIterator{ this, m_size };
+	return myVector<T>::myIterator{ this, static_cast<int>(m_size) };
 }
 
 template<class T>
-myVector<T>& myVector<T>::operator=(const myVector& v)
+myVector<T>& myVector<T>::operator=(const myVector<T>& v)
 {
 	std::swap(*this, v);
 	return *this;
@@ -166,17 +168,6 @@ myVector<T> myVector<T>::insert(const int index, T & value)/*(const T & index, T
 template<class T>
 void myVector<T>::pop_back(unsigned int & index)
 {
-	//if (index > m_size || empty())
-	//{
-	//	--m_size;
-	//	return false;
-	//}
-	//for (auto i = index; i < m_size; ++i)
-	//{
-	//	std::swap(m_arr[i], m_arr[i + 1]);
-	//}
-	//
-	//return true;
 	if (m_size == m_capacity)
 	{
 		T* result = new T[m_capacity];
@@ -201,7 +192,8 @@ T myVector<T>::getIndex(const T & value) const
 		{
 			return i;
 		}
-		std::cout << "Index not found" << std::endl;
+		std::cout << "Index not found" 
+			<< std::endl;
 	}
 
 }
@@ -225,12 +217,14 @@ void myVector<T>::summOfMassPastMinEl()
 		sum += m_arr[i];
 	}
 	std::cout << "Summ of values of massive:" << std::setw(4)
-		<< sum << "\nMinimal element: " << std::setw(4) << m_arr[0] << std::endl;
+		<< sum << "\nMinimal element: " 
+		<< std::setw(4) << m_arr[0] << std::endl;
 }
 
 template<class T>
 void myVector<T>::shakerSort(int & size)
 {
+	Timer tm;
 	int left, right, i;
 	left = 0;
 	right = size - 1;
@@ -252,12 +246,16 @@ void myVector<T>::shakerSort(int & size)
 		--right;
 	}
 
+	std::cout << std::endl;
+	std::cout << "shakerSort method()" 
+		<< std::endl;
 	printSorted(m_arr, size);
 }
 
 template<class T>
 void myVector<T>::sortOfShell(int& size)
 {
+	Timer tm;
 	int d, i, j, count;
 	d = size;
 	d = d / 2;
@@ -278,8 +276,10 @@ void myVector<T>::sortOfShell(int& size)
 		d = d / 2;
 	}
 
-	printSorted(m_arr, size);
 	std::cout << std::endl;
+	std::cout << "sortOfShell method()"
+		<< std::endl;
+	printSorted(m_arr, size);
 }
 
 template<class T>
@@ -292,25 +292,44 @@ void myVector<T>::clear()
 template<class T>
 myVector<T> myVector<T>::find(myVector<T>& v, int value)
 {
+	std::cout << std::endl;
+	std::cout << "find method of customVector()" 
+		<< std::endl;
+	Timer tm;
 	for (auto i : v)
 	{
 		if (i == value)
 		{
-			std::cout << "In vector element is find: " << value << std::endl;
+			std::cout << "In vector element is find: "
+				<< value << std::endl;
 			return value;
 		}
 	}
 
-	std::cout << "Value isn't find!" << std::endl;
+	std::cout << "Value isn't find!" 
+		<< std::endl;
 
 	return value;
 }
 
 template<class T>
+void myVector<T>::fill_array(myVector<T> arr, const int size)
+{
+	srand(time(NULL));
+
+	for (int i = 0; i < size; i++)
+	{
+		arr[i] = rand() % 10;
+		m_arr[i] = arr[i];
+	}
+}
+
+template<class T>
 T myVector<T>::size() const
 {
-	std::cout << "Size of vector:" << std::setw(4) << m_size
-		<< std::endl << std::endl;
+	std::cout << "Size of vector:" 
+		<< std::setw(4) << m_size
+		<< std::endl;
 	return m_size;
 }
 
@@ -335,18 +354,14 @@ myVector<T>::myVector(unsigned int && size)
 	m_size = size;
 	m_capacity = size * 2;
 	m_arr = new T[m_capacity];
-
-	//for (int i = 0; i < size; i++)
-	//{
-	//	m_arr[i] = rand() % 100 - 50;
-	//}
 }
 
 template<class T>
 myVector<T>::myVector(const myVector& v)
 {
 	m_size = v.m_size;
-	m_arr = new T[m_capacity];
+	m_capacity = v.m_capacity;
+	m_arr = new T[v.m_capacity];
 
 	std::copy(v.m_arr, v.m_arr + m_size, v.m_arr);
 }
