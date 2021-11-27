@@ -4,6 +4,7 @@
 #include "SimpleExplicit.h"
 #include "myVector.h"
 #include "myString.h"
+#include "TextView.h"
 
 int main()
 {
@@ -11,11 +12,17 @@ int main()
 	SimpleExplicit se{};
 
 	myString str("Stas");
+	myString str2("Sasha");
+
+	TextView<myString> tv(&str);
+	TextView<myString> tvv(tv);
+
 	myVector<myString> sv(2);
 
 	sv.push_back(str);
+	sv.push_back(str2);
 	std::cout << str 
-		<< std::endl;
+		<< str2 << std::endl;
 
 	/*foo();*/
 

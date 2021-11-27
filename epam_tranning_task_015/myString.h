@@ -7,15 +7,16 @@ class myString
 public:
 	myString();
 	explicit myString(const char * const s_string);
-	myString(const myString& other);
+	myString(const myString & other);
 	myString(myString && other) noexcept;
 	~myString() noexcept;
 
 	myString& operator=(const myString& v);
-	friend std::ostream& operator<<
-		(std::ostream& out, const myString& ms);
+	friend std::ostream & operator<<
+		(std::ostream & out, const myString & ms);
 
 private:
 	char * s_string;
 	size_t s_size;
+	void outputLog(const char * mess);
 };

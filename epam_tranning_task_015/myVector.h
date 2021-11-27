@@ -294,6 +294,7 @@ void myVector<T>::sortOfShell(int& size)
 template<class T>
 void myVector<T>::clear()
 {
+	std::cout << "Destrucor of vector.\n";
 	m_arr = nullptr;
 	m_size = 0;
 }
@@ -340,7 +341,7 @@ myVector<T>::myVector()
 template<class T>
 myVector<T>::myVector(unsigned int && size)
 {
-	srand(time(NULL));
+	/*srand(time(NULL));*/
 	m_size = size;
 	m_capacity = size * 2;
 	m_arr = new T[m_capacity];
