@@ -14,7 +14,7 @@ int main()
 	myString str("Stas");
 	myString str2("Sasha");
 
-	TextView<myString> tv(&str);
+	TextView<myString> tv(str2);
 	TextView<myString> tvv(tv);
 
 	myVector<myString> sv(2);

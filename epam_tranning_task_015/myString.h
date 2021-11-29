@@ -6,6 +6,7 @@ class myString
 {
 public:
 	myString();
+
 	explicit myString(const char * const s_string);
 	myString(const myString & other);
 	myString(myString && other) noexcept;
@@ -15,8 +16,13 @@ public:
 	friend std::ostream & operator<<
 		(std::ostream & out, const myString & ms);
 
+	const char * data() const noexcept;
+	char * data() noexcept;
+
+	unsigned int const & size() const;
+
 private:
 	char * s_string;
-	size_t s_size;
+	unsigned int s_size;
 	void outputLog(const char * mess);
 };

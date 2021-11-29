@@ -26,7 +26,7 @@ myString::~myString() noexcept
 {
 	outputLog("~String()");
 
-	delete[] s_string;
+	delete s_string;
 	s_size = 0;
 }
 
@@ -37,8 +37,23 @@ myString & myString::operator=(const myString & v)
 		return *this;
 	}
 
-	s_string = std::move(v.s_string);
+	s_string = v.s_string;
 	return *this;
+}
+
+const char * myString::data() const noexcept
+{
+	return this->s_string;
+}
+
+char * myString::data() noexcept
+{
+	return this->s_string;
+}
+
+unsigned int const & myString::size() const
+{
+	return this->s_size;
 }
 
 void myString::outputLog(const char * mess)
@@ -50,13 +65,12 @@ void myString::outputLog(const char * mess)
 myString::myString(myString && other) noexcept
 {
 	outputLog("String(String && other)");
-	s_string = other.s_string;
+	s_string = std::move(other.s_string);
 	s_size = other.s_size;
-	delete other.s_string;
-	other.s_size = 0;
 }
 
-std::ostream& operator<<(std::ostream & out, const myString & ms)
+std::ostream& operator<<(std::ostream & out,
+	const myString & ms)
 {
 	out << "String: " << ms.s_string 
 		<< std::endl;
