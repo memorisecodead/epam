@@ -148,7 +148,7 @@ std::ostream& operator<<(std::ostream& out, const Student& st)
 	return out;
 }
 
-bool compareAge (Student * rhs, Student * lhs)
+bool compareAge (const Student * rhs,const  Student * lhs)
 {
 	/*outputLog("Functor for comapare of student's ages");*/
 	return (*rhs).getAge() >  (*lhs).getAge();

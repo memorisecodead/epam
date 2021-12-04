@@ -1,5 +1,4 @@
 #pragma once
-#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include <iostream>
 #include <iomanip>
 #include <ctime>
@@ -7,105 +6,66 @@
 #include <cassert>
 #include <iterator>
 
-template <class Vector>
-class VectorIterator : public std::iterator<std::random_access_iterator_tag, Vector>
-{
-public:
- 	using ValueType = typename Vector::ValueType;
-	using PointerType = ValueType*;
-	using ReferenceType = ValueType&;
-	using Valueñategory = std::random_access_iterator_tag;
-	using Difference_type = std::ptrdiff_t;
-public:
-	VectorIterator(PointerType ptr)
-	:m_ptr{ ptr }
-	{
-	}
+template <class U>
+class Iterator;
 
-	VectorIterator& operator++()
-	{
-		++m_ptr;
-		return *this;
-	}
-	VectorIterator& operator++(int index)
-	{
-		VectorIterator iterator = *this;
-		++(*this);
-		return iterator;
-	}
-	VectorIterator& operator--()
-	{
-		--m_ptr;
-		return *this;
-	}
-	VectorIterator& operator--(int index)
-	{
-		VectorIterator iterator = *this;
-		--(*this);
-		return iterator;
-	}
-
-	Difference_type operator+ (VectorIterator v) const { return m_ptr + v.m_ptr; }
-	friend std::ptrdiff_t operator- (VectorIterator v, VectorIterator _v);
-
-	ReferenceType operator[](int index) { return *(m_ptr + index); }
-	ReferenceType operator* () { return *m_ptr; }
-	PointerType operator->() { return m_ptr; }
-
-	bool operator==(const VectorIterator& other) const { return m_ptr == other.m_ptr; }
-	bool operator!=(const VectorIterator& other) const { return !(*this == other); }
-	bool operator< (const VectorIterator& other) const { return	*m_ptr < *other.m_ptr; }
-private:
-	PointerType m_ptr;
-};
-
+#pragma region("Vector implementation")
 template <class T>
 class myVector
 {
 public:
-	using ValueType = T;
-	using Iterator = VectorIterator<myVector<T>>;
+	
+	using value_type = T;
+	using pointer_type = T*;
+	using reference_type = T&;
+	using difference_type = std::ptrdiff_t;
+	using iterator = Iterator<T>;
+	using const_iterator = Iterator<const T>;
+
 public:
 	myVector();
-	myVector(unsigned int && size);
-	myVector(T * obj);
-	myVector(const myVector & v);
+	myVector(unsigned int&& size);
+	myVector(T* obj);
+	myVector(const myVector& v);
 
 	myVector& operator=(const myVector& v);
-	myVector& operator=(const T & v);
-	T& operator[](T index) const;
-	T& operator=(const T * v);
-	const T& operator[](unsigned int index) const;
+	myVector& operator=(const T& v);
+	const T& operator[](int index) const;
+	T& operator[](T index);
+	T& operator=(const T* v);
 
 	T getIndex(const T& value) const;
 	T size() const;
 	bool empty();
 
-	void push_back(T & value);
-	void push_back(T && value);
+	void push_back(T& value);
+	void push_back(T&& value);
 	template<class ...Args>
 	T& emplace_back(Args &&... args);
 	void pop_back();
-	myVector insert(const int index, T & value); // dd+
+	myVector insert(const int index, T& value); // dd+
 
 	void showVector();
 
-	Iterator begin() { return Iterator(m_arr); }
-	Iterator end() { return Iterator(m_arr + m_size); }
+	iterator begin() { return iterator(m_arr); }
+	iterator end() { return iterator(m_arr + m_size); }
+
+	const_iterator cbegin() const { return const_iterator(m_arr); }
+	const_iterator cend() const { return const_iterator(m_arr + m_size); }
 
 	void clear();
 	~myVector();
 private:
-	T * m_arr;
-	unsigned int m_capacity;
-	unsigned int m_size;
+	T* m_arr;
+	std::size_t  m_capacity;
+	std::size_t m_size;
 };
 
 template<class T>
 myVector<T>::~myVector()
 {
 	clear();
-	delete [] m_arr;
+	delete[] m_arr;
 }
 
 template<class T>
@@ -133,9 +93,17 @@ myVector<T>& myVector<T>::operator=(const T& v)
 }
 
 template<class T>
-T& myVector<T>::operator[](T index) const
+const T& myVector<T>::operator[](int index) const
 {
+	if (index < 0 && index >= m_size)
+		throw std::exception("Index out of range!");
 	return m_arr[index];
+}
+
+template<class T>
+T& myVector<T>::operator[](T index)
+{
+	return operator[](index);
 }
 
 template<class T>
@@ -146,23 +114,13 @@ T& myVector<T>::operator=(const T* v)
 }
 
 template<class T>
-const T& myVector<T>::operator[](unsigned int index) const
-{
-	if (index >= m_size)
-	{
-		assert("index better than size!");
-	}
-	return m_arr[index];
-}
-
-template<class T>
-void myVector<T>::push_back(T & value)
+void myVector<T>::push_back(T& value)
 {
 	if (m_size >= m_capacity)
 	{
 		auto capacity = m_capacity * 2;
-		
-		T * result = new T[capacity];
+
+		T* result = new T[capacity];
 
 		for (auto i = 0; i < m_size; ++i)
 		{
@@ -175,7 +133,7 @@ void myVector<T>::push_back(T & value)
 		m_capacity = capacity;
 	}
 
-	m_arr[++m_size] = value;	
+	m_arr[++m_size] = value;
 }
 
 template<class T>
@@ -202,16 +160,16 @@ void myVector<T>::push_back(T&& value)
 }
 
 template<class T>
-myVector<T> myVector<T>::insert(const int index, T & value)
+myVector<T> myVector<T>::insert(const int index, T& value)
 {
-	T * current = new T[m_capacity];
+	T* current = new T[m_capacity];
 
 	for (int i = 0; i < m_size; ++i)
 	{
 		current[i] = m_arr[i];
 	}
 
-	delete [] m_arr;
+	delete[] m_arr;
 	m_arr = nullptr;
 
 	m_arr = new T[m_capacity + 1];
@@ -240,7 +198,7 @@ void myVector<T>::pop_back()
 }
 
 template<class T>
-T myVector<T>::getIndex(const T & value) const
+T myVector<T>::getIndex(const T& value) const
 {
 	for (int i = 0; i < m_size; ++i)
 	{
@@ -288,7 +246,7 @@ myVector<T>::myVector()
 }
 
 template<class T>
-myVector<T>::myVector(unsigned int && size)
+myVector<T>::myVector(unsigned int&& size)
 {
 	m_size = size;
 	m_capacity = size * 2;
@@ -301,7 +259,7 @@ myVector<T>::myVector(unsigned int && size)
 }
 
 template<class T>
-myVector<T>::myVector(T * obj)
+myVector<T>::myVector(T* obj)
 {
 	m_size = 10;
 	m_capacity = m_size * 2;
@@ -309,7 +267,7 @@ myVector<T>::myVector(T * obj)
 
 	for (auto it = 0; it < m_size; ++it)
 	{
-		m_arr[it] = obj[it] ;
+		m_arr[it] = obj[it];
 	}
 }
 
@@ -346,9 +304,58 @@ T& myVector<T>::emplace_back(Args && ...args)
 	new (&m_arr[++m_size]) T(std::forward<T>(args)...);
 	return m_arr[++m_size];
 }
+#pragma endregion
 
-template<typename T>
-std::ptrdiff_t operator-(VectorIterator<T> v, VectorIterator<T> _v) 
+template <class U>
+class Iterator
 {
-	return v.m_ptr - _v.m_ptr; 
-}
+public:
+
+ 	using value_type = typename U::value_type;
+	using pointer_type = value_type*;
+	using reference_type = value_type&;
+	using difference_type = std::ptrdiff_t;
+	using iterator_category = std::random_access_iterator_tag;
+
+	Iterator(pointer_type ptr = nullptr)
+	:m_ptr{ ptr }
+	{}
+	Iterator(const Iterator<U>& rawIterator) = default;
+
+	Iterator<U>& operator=(const Iterator<U>& rawIterator) = default;
+	Iterator<U>& operator=(U* ptr) { m_ptr = ptr; return (*this); }
+
+	pointer_type get_ptr() const { return m_ptr; }
+
+	const pointer_type get_const_ptr() const { return m_ptr; }
+
+	bool operator==(const Iterator<U>& rawIterator)const { return (m_ptr == rawIterator.get_const_ptr()); }
+	bool operator!=(const Iterator<U>& rawIterator)const { return (m_ptr != rawIterator.get_const_ptr()); }
+
+	Iterator<U>& operator++() { ++m_ptr; return (*this); }
+	Iterator<U>& operator--() { --m_ptr; return (*this); }
+
+	Iterator<U> operator++(int offset) { auto temp(*this); ++m_ptr; return temp; }
+	Iterator<U> operator--(int offset) { auto temp(*this); --m_ptr; return temp; }
+
+	Iterator<U>& operator+=(int offset) { m_ptr += offset; return (*this); }
+	Iterator<U>& operator-=(int offset) { m_ptr -= offset; return (*this); }
+
+	Iterator<U> operator+(int offset) const { auto oldPtr = m_ptr; m_ptr += offset; auto temp(*this); m_ptr = oldPtr; return temp; }
+	Iterator<U> operator-(int offset) const { auto oldPtr = m_ptr; m_ptr -= offset; auto temp(*this); m_ptr = oldPtr; return temp; }
+
+	difference_type operator-(const Iterator<U>& rawIterator) { return std::distance(rawIterator.getPtr(), this->getPtr()); }
+	
+	reference_type operator*() { return *m_ptr; }
+	const reference_type operator*() const { return *m_ptr; }
+
+	pointer_type operator->() { return m_ptr; }
+	const pointer_type operator->() const { return m_ptr; }
+
+	reference_type operator[](int offset) { return m_ptr[offset]; }
+	const reference_type operator[](int offset) const { return m_ptr[offset]; }
+
+protected:
+	pointer_type m_ptr;
+};
+
