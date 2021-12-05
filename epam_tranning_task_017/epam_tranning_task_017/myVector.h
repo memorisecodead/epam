@@ -344,7 +344,7 @@ public:
 	Iterator<T> operator+(const difference_type& offset) { Iterator<T> it(*this);	return it += offset;}
 	Iterator<T> operator-(const difference_type& offset) { Iterator<T> it(*this);	return it -= offset;}
 
-	difference_type operator-(const Iterator<T>& other) const { return std::distance(rawIterator.get_const_ptr(), this->get_const_ptr()); }
+	difference_type operator-(const Iterator<T>& other) const { return std::distance(other.get_const_ptr(), this->get_const_ptr()); }
 	
 	bool operator<(const Iterator<T>& other) const { return this->get_const_ptr() < other.get_const_ptr(); }
 	

@@ -16,7 +16,7 @@ int main()
 		myVector<Student*> students_vc;
 		students_vc.push_back(&st[0]);
 		students_vc.push_back(&st[1]);
-
+		
 		for (auto i = students_vc.begin(); i != students_vc.end(); ++i)
 		{
 			std::cout << (*i)->getAge();
