@@ -341,17 +341,19 @@ public:
 	Iterator<T>& operator+=(int offset) { m_ptr += offset; return (*this); }
 	Iterator<T>& operator-=(int offset) { m_ptr -= offset; return (*this); }
 
-	Iterator<T> operator+(const difference_type& movement) { Iterator<T> it(*this);	return it += movement;}
-	Iterator<T> operator-(const difference_type& movement) { Iterator<T> it(*this);	return it -= movement;}
+	Iterator<T> operator+(const difference_type& offset) { Iterator<T> it(*this);	return it += offset;}
+	Iterator<T> operator-(const difference_type& offset) { Iterator<T> it(*this);	return it -= offset;}
 
-	difference_type operator-(const Iterator<T>& rawIterator) const { return std::distance(rawIterator.get_const_ptr(), this->get_const_ptr()); }
+	difference_type operator-(const Iterator<T>& other) const { return std::distance(rawIterator.get_const_ptr(), this->get_const_ptr()); }
 	
 	bool operator<(const Iterator<T>& other) const { return this->get_const_ptr() < other.get_const_ptr(); }
-	bool operator<= (const Iterator<T>& other) const { return this->get_const_ptr() <= other.get_const_ptr(); }
-	bool operator>  (const Iterator<T>& other) const { return this->get_const_ptr() >  other.get_const_ptr(); }
-	bool operator>= (const Iterator<T>& other) const { return this->get_const_ptr() >= other.get_const_ptr(); }
-	bool operator== (const Iterator<T>& other) const { return this->get_const_ptr() == other.get_const_ptr(); }
-	bool operator!= (const Iterator<T>& other) const { return this->get_const_ptr() != other.get_const_ptr(); }
+	
+	// TBD
+	//bool operator<= (const Iterator<T>& other) const { return this->get_const_ptr() <= other.get_const_ptr(); }
+	//bool operator>  (const Iterator<T>& other) const { return this->get_const_ptr() >  other.get_const_ptr(); }
+	//bool operator>= (const Iterator<T>& other) const { return this->get_const_ptr() >= other.get_const_ptr(); }
+	//bool operator== (const Iterator<T>& other) const { return this->get_const_ptr() == other.get_const_ptr(); }
+	//bool operator!= (const Iterator<T>& other) const { return this->get_const_ptr() != other.get_const_ptr(); }
 
 	reference operator*() { return *m_ptr; }
 	const reference operator*() const { return *m_ptr; }
