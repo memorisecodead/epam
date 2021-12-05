@@ -1,12 +1,9 @@
 #pragma once
 #include <iostream>
 #include <iomanip>
-#include <ctime>
-#include <string>
-#include <cassert>
 #include <iterator>
 
-template <class U>
+template <class T>
 class Iterator;
 
 #pragma region("Vector implementation")
@@ -19,20 +16,23 @@ public:
 	using pointer_type = T*;
 	using reference_type = T&;
 	using difference_type = std::ptrdiff_t;
-	using iterator = Iterator<T>;
-	using const_iterator = Iterator<const T>;
+	using iterator = Iterator<myVector<T>>;
+	using const_iterator = Iterator<const myVector<T>>;
 
 public:
 	myVector();
-	myVector(unsigned int&& size);
+	myVector(unsigned int& size);
 	myVector(T* obj);
 	myVector(const myVector& v);
 
-	myVector& operator=(const myVector& v);
+	//TBD
+	//myVector& operator=(const myVector& v);
 	myVector& operator=(const T& v);
 	const T& operator[](int index) const;
 	T& operator[](T index);
-	T& operator=(const T* v);
+	
+	//TBD
+	//T& operator=(const T* v);
 
 	T getIndex(const T& value) const;
 	T size() const;
@@ -78,12 +78,12 @@ void myVector<T>::showVector()
 	}
 }
 
-template<class T>
-myVector<T>& myVector<T>::operator=(const myVector& v)
-{
-	std::swap(*this, v);
-	return *this;
-}
+//template<class T>
+//myVector<T>& myVector<T>::operator=(const myVector& v)
+//{
+//	std::swap(*this, v);
+//	return *this;
+//}
 
 template<class T>
 myVector<T>& myVector<T>::operator=(const T& v)
@@ -106,12 +106,12 @@ T& myVector<T>::operator[](T index)
 	return operator[](index);
 }
 
-template<class T>
-T& myVector<T>::operator=(const T* v)
-{
-	std::swap(*this, *v);
-	return *this;
-}
+//template<class T>
+//T& myVector<T>::operator=(const T* v)
+//{
+//	std::swap(*this, *v);
+//	return *this;
+//}
 
 template<class T>
 void myVector<T>::push_back(T& value)
@@ -246,7 +246,7 @@ myVector<T>::myVector()
 }
 
 template<class T>
-myVector<T>::myVector(unsigned int&& size)
+myVector<T>::myVector(unsigned int& size)
 {
 	m_size = size;
 	m_capacity = size * 2;
@@ -306,56 +306,63 @@ T& myVector<T>::emplace_back(Args && ...args)
 }
 #pragma endregion
 
-template <class U>
+template <class T>
 class Iterator
 {
 public:
 
- 	using value_type = typename U::value_type;
-	using pointer_type = value_type*;
-	using reference_type = value_type&;
+ 	using value_type = typename T::value_type;
+	using pointer = value_type*;
+	using reference = value_type&;
 	using difference_type = std::ptrdiff_t;
 	using iterator_category = std::random_access_iterator_tag;
 
-	Iterator(pointer_type ptr = nullptr)
-	:m_ptr{ ptr }
+	Iterator(pointer ptr = nullptr)
+	: m_ptr{ ptr }
 	{}
-	Iterator(const Iterator<U>& rawIterator) = default;
+	Iterator(const Iterator<T>& rawIterator) = default;
 
-	Iterator<U>& operator=(const Iterator<U>& rawIterator) = default;
-	Iterator<U>& operator=(U* ptr) { m_ptr = ptr; return (*this); }
+	Iterator<T>& operator=(const Iterator<T>& rawIterator) = default;
+	Iterator<T>& operator=(T* ptr) { m_ptr = ptr; return (*this); }
 
-	pointer_type get_ptr() const { return m_ptr; }
+	pointer get_ptr() { return m_ptr; }
 
-	const pointer_type get_const_ptr() const { return m_ptr; }
+	const pointer get_const_ptr() const { return m_ptr; }
 
-	bool operator==(const Iterator<U>& rawIterator)const { return (m_ptr == rawIterator.get_const_ptr()); }
-	bool operator!=(const Iterator<U>& rawIterator)const { return (m_ptr != rawIterator.get_const_ptr()); }
+	bool operator==(const Iterator<T>& rawIterator)const { return (m_ptr == rawIterator.get_const_ptr()); }
+	bool operator!=(const Iterator<T>& rawIterator)const { return (m_ptr != rawIterator.get_const_ptr()); }
 
-	Iterator<U>& operator++() { ++m_ptr; return (*this); }
-	Iterator<U>& operator--() { --m_ptr; return (*this); }
+	Iterator<T>& operator++() { ++m_ptr; return (*this); }
+	Iterator<T>& operator--() { --m_ptr; return (*this); }
 
-	Iterator<U> operator++(int offset) { auto temp(*this); ++m_ptr; return temp; }
-	Iterator<U> operator--(int offset) { auto temp(*this); --m_ptr; return temp; }
+	Iterator<T> operator++(int offset) { auto temp(*this); ++m_ptr; return temp; }
+	Iterator<T> operator--(int offset) { auto temp(*this); --m_ptr; return temp; }
 
-	Iterator<U>& operator+=(int offset) { m_ptr += offset; return (*this); }
-	Iterator<U>& operator-=(int offset) { m_ptr -= offset; return (*this); }
+	Iterator<T>& operator+=(int offset) { m_ptr += offset; return (*this); }
+	Iterator<T>& operator-=(int offset) { m_ptr -= offset; return (*this); }
 
-	Iterator<U> operator+(int offset) const { auto oldPtr = m_ptr; m_ptr += offset; auto temp(*this); m_ptr = oldPtr; return temp; }
-	Iterator<U> operator-(int offset) const { auto oldPtr = m_ptr; m_ptr -= offset; auto temp(*this); m_ptr = oldPtr; return temp; }
+	Iterator<T> operator+(const difference_type& movement) { Iterator<T> it(*this);	return it += movement;}
+	Iterator<T> operator-(const difference_type& movement) { Iterator<T> it(*this);	return it -= movement;}
 
-	difference_type operator-(const Iterator<U>& rawIterator) { return std::distance(rawIterator.getPtr(), this->getPtr()); }
+	difference_type operator-(const Iterator<T>& rawIterator) const { return std::distance(rawIterator.get_const_ptr(), this->get_const_ptr()); }
 	
-	reference_type operator*() { return *m_ptr; }
-	const reference_type operator*() const { return *m_ptr; }
+	bool operator<(const Iterator<T>& other) const { return this->get_const_ptr() < other.get_const_ptr(); }
+	bool operator<= (const Iterator<T>& other) const { return this->get_const_ptr() <= other.get_const_ptr(); }
+	bool operator>  (const Iterator<T>& other) const { return this->get_const_ptr() >  other.get_const_ptr(); }
+	bool operator>= (const Iterator<T>& other) const { return this->get_const_ptr() >= other.get_const_ptr(); }
+	bool operator== (const Iterator<T>& other) const { return this->get_const_ptr() == other.get_const_ptr(); }
+	bool operator!= (const Iterator<T>& other) const { return this->get_const_ptr() != other.get_const_ptr(); }
 
-	pointer_type operator->() { return m_ptr; }
-	const pointer_type operator->() const { return m_ptr; }
+	reference operator*() { return *m_ptr; }
+	const reference operator*() const { return *m_ptr; }
 
-	reference_type operator[](int offset) { return m_ptr[offset]; }
-	const reference_type operator[](int offset) const { return m_ptr[offset]; }
+	pointer operator->() { return m_ptr; }
+	const pointer operator->() const { return m_ptr; }
+
+	reference operator[](int offset) { return m_ptr[offset]; }
+	const reference operator[](int offset) const { return m_ptr[offset]; }
 
 protected:
-	pointer_type m_ptr;
+	pointer m_ptr;
 };
 
