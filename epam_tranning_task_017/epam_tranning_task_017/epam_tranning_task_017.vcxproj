@@ -145,7 +145,8 @@
     <ClCompile Include="StudentLib.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="myVector.h" />
+    <ClInclude Include="IteratorTraits.h" />
+    <ClInclude Include="MyVector.h" />
     <ClInclude Include="StudentLib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -23,10 +23,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="myVector.h">
+    <ClInclude Include="MyVector.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="StudentLib.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="IteratorTraits.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

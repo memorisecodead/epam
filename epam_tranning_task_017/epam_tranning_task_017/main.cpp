@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+
 #include "StudentLib.h"
 #include "myVector.h"
 
@@ -13,7 +14,7 @@ int main()
 
 		st = st->dataPush(st);
 
-		myVector<Student*> students_vc;
+		DataStructure::MyVector<Student*> students_vc;
 		students_vc.push_back(&st[0]);
 		students_vc.push_back(&st[1]);
 		
