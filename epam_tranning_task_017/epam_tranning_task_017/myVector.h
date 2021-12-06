@@ -329,8 +329,8 @@ public:
 
 	const pointer get_const_ptr() const { return m_ptr; }
 
-	bool operator==(const Iterator<T>& rawIterator)const { return (m_ptr == rawIterator.get_const_ptr()); }
-	bool operator!=(const Iterator<T>& rawIterator)const { return (m_ptr != rawIterator.get_const_ptr()); }
+	bool operator==(const Iterator<T>& other)const { return (m_ptr == other.get_const_ptr()); }
+	bool operator!=(const Iterator<T>& other)const { return (m_ptr != other.get_const_ptr()); }
 
 	Iterator<T>& operator++() { ++m_ptr; return (*this); }
 	Iterator<T>& operator--() { --m_ptr; return (*this); }
@@ -347,13 +347,9 @@ public:
 	difference_type operator-(const Iterator<T>& other) const { return std::distance(other.get_const_ptr(), this->get_const_ptr()); }
 	
 	bool operator<(const Iterator<T>& other) const { return this->get_const_ptr() < other.get_const_ptr(); }
-	
-	// TBD
-	//bool operator<= (const Iterator<T>& other) const { return this->get_const_ptr() <= other.get_const_ptr(); }
-	//bool operator>  (const Iterator<T>& other) const { return this->get_const_ptr() >  other.get_const_ptr(); }
-	//bool operator>= (const Iterator<T>& other) const { return this->get_const_ptr() >= other.get_const_ptr(); }
-	//bool operator== (const Iterator<T>& other) const { return this->get_const_ptr() == other.get_const_ptr(); }
-	//bool operator!= (const Iterator<T>& other) const { return this->get_const_ptr() != other.get_const_ptr(); }
+	bool operator<= (const Iterator<T>& other) const { return this->get_const_ptr() <= other.get_const_ptr(); }
+	bool operator>  (const Iterator<T>& other) const { return this->get_const_ptr() >  other.get_const_ptr(); }
+	bool operator>= (const Iterator<T>& other) const { return this->get_const_ptr() >= other.get_const_ptr(); }
 
 	reference operator*() { return *m_ptr; }
 	const reference operator*() const { return *m_ptr; }
