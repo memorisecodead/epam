@@ -15,11 +15,21 @@ struct Student
 		(std::ostream & out, const Student & st);
 
 	void setAge(unsigned int age);
+	unsigned int & getAge();
 	const unsigned int & getAge() const;
 
-	void outputLog(const char* mess);
-
-	Student * dataPush(Student * st);
+	void setName(std::string name);
+	std::string & getName();
+	const std::string & getName() const;
+	void setSurname(std::string surname);
+	std::string & getSurname();
+	const std::string & getSurname() const;
+	void setGroup(std::string group);
+	std::string & getGroup();
+	const std::string & getGroup() const;
+	void setFaculty(std::string faculty);
+	std::string & getFaculty();
+	const std::string & getFaculty() const;
 
 	~Student();
 
@@ -31,4 +41,8 @@ private:
 	std::string m_faculty;
 };
 
-bool compareAge(Student* rhs, Student* lhs);
+bool compareAge(Student * rhs, Student * lhs);
+
+void dataPush(Student* st);
+
+void outputLog(Student& st, const char* mess);

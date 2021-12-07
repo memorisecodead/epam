@@ -2,6 +2,8 @@
 #include <iostream>
 #include <iomanip>
 #include <iterator>
+#include <algorithm>
+#include <cassert>
 
 #include "IteratorTraits.h"
 
@@ -24,29 +26,37 @@ namespace DataStructure
 
 	public:
 		MyVector();
-		MyVector(unsigned int& size);
-		MyVector(T* obj);
+		MyVector(unsigned int size); //UPD
+		MyVector(unsigned int size, const T& obj); //UPD
 		MyVector(const MyVector& v);
+		MyVector(const MyVector&& v);
+
+		void reAlloc(unsigned int capacity);
 
 		//TBD
-		//myVector& operator=(const myVector& v);
+		DataStructure::MyVector<T>& operator=(const DataStructure::MyVector<T>& v);
+		DataStructure::MyVector<T>& operator=(const DataStructure::MyVector<T>&& v); //UPD
 		MyVector& operator=(const T& v);
 		const T& operator[](int index) const;
 		T& operator[](T index);
+		MyVector<T>& operator=(std::initializer_list<T> v); //UPD
 
-		//TBD
-		//T& operator=(const T* v);
-
-		T getIndex(const T& value) const;
 		T size() const;
+		unsigned int capacity() const;
+		T getIndex(const T& value) const;
 		bool empty();
+		T & frontValue(); //UPD
+		T & backValue(); //UPD
 
-		void push_back(T& value);
-		void push_back(T&& value);
+		void push_back(T& value); //UPD
+		void push_back(T&& value); //UPD
 		template<class ...Args>
 		T& emplace_back(Args &&... args);
 		void pop_back();
-		MyVector insert(const int index, T& value);
+		void insert(IteratorTraits::Iterator<T> index, unsigned int size, const T& value);
+		MyVector<T> insert(const int index, T& value);
+		void assign(unsigned int size, const T& value);
+		void reserve(unsigned int capacity);
 
 		void showVector();
 
@@ -60,7 +70,7 @@ namespace DataStructure
 		~MyVector();
 	private:
 		T* m_arr;
-		std::size_t  m_capacity;
+		std::size_t m_capacity;
 		std::size_t m_size;
 	};
 
@@ -81,12 +91,29 @@ namespace DataStructure
 		}
 	}
 
-	//template<class T>
-	//myVector<T>& myVector<T>::operator=(const myVector& v)
-	//{
-	//	std::swap(*this, v);
-	//	return *this;
-	//}
+	template<class T>
+	DataStructure::MyVector<T>& MyVector<T>::operator=(const DataStructure::MyVector<T>& v)
+	{
+		if (this == &v)
+		{
+			return *this;
+		}
+
+		m_arr = v.m_arr;
+		m_size = v.m_size;
+		m_capacity = v.m_capacity;
+	}
+
+	template<class T>
+	DataStructure::MyVector<T>& MyVector<T>::operator=(const DataStructure::MyVector<T>&& v)
+	{
+		std::cout << "Move assistment operator";
+		std::swap(m_size, v.m_size);
+		std::swap(m_capacity, v.m_capacity);
+		std::swap(m_arr, v.m_arr);
+
+		return *this;
+	}
 
 	template<class T>
 	MyVector<T>& MyVector<T>::operator=(const T& v)
@@ -109,33 +136,20 @@ namespace DataStructure
 		return operator[](index);
 	}
 
-	//template<class T>
-	//T& myVector<T>::operator=(const T* v)
-	//{
-	//	std::swap(*this, *v);
-	//	return *this;
-	//}
+	template<class T>
+	MyVector<T>& MyVector<T>::operator=(std::initializer_list<T> v)
+	{
+		assign(v.begin(), v.end());
+		return *this;
+	}
 
 	template<class T>
-	void MyVector<T>::push_back(T& value)
+	void MyVector<T>::push_back(T & value)
 	{
 		if (m_size >= m_capacity)
 		{
-			auto capacity = m_capacity * 2;
-
-			T* result = new T[capacity];
-
-			for (auto i = 0; i < m_size; ++i)
-			{
-				result[i] = m_arr[i];
-			}
-
-			delete[] m_arr;
-			m_arr = result;
-
-			m_capacity = capacity;
+			reserve(m_capacity + 5);
 		}
-
 		m_arr[++m_size] = value;
 	}
 
@@ -144,22 +158,13 @@ namespace DataStructure
 	{
 		if (m_size >= m_capacity)
 		{
-			auto capacity = m_capacity * 2;
-
-			T* result = new T[capacity];
-
-			for (auto i = 0; i < m_size; ++i)
-			{
-				result[i] = m_arr[i];
-			}
-
-			delete[] m_arr;
-			m_arr = result;
-
-			m_capacity = capacity;
+			reserve(m_capacity + 5);
 		}
+		/*m_arr[my_size++] = v;
 
-		m_arr[++m_size] = value;
+		emplace_back(std::move(value));*/
+		m_arr[++m_size] = std::move(value);
+		
 	}
 
 	template<class T>
@@ -192,12 +197,45 @@ namespace DataStructure
 	}
 
 	template<class T>
+	void MyVector<T>::assign(unsigned int size, const T& value)
+	{
+		std::fill(size, value);
+	}
+
+	template<class T>
+	void MyVector<T>::reserve(unsigned int capacity)
+	{
+		if (m_arr == nullptr)
+		{
+			m_size = 0;
+			m_capacity = 0;
+		}
+		T* buffer = new T[capacity];
+		unsigned int l_size = capacity < m_size ? capacity : m_size;
+
+		for (unsigned int i = 0; i < l_size; i++)
+		{
+			buffer[i] = m_arr[i];
+		}
+
+		m_capacity = capacity;
+		delete[] m_arr;
+		m_arr = buffer;
+	}
+
+	template<class T>
 	void MyVector<T>::pop_back()
 	{
 		if (m_size > 0)
 		{
 			m_arr[--m_size].~T();
 		}
+	}
+
+	template<class T>
+	void MyVector<T>::insert(IteratorTraits::Iterator<T> index, unsigned int size, const T& value)
+	{
+		std::fill(index, size, value);
 	}
 
 	template<class T>
@@ -211,7 +249,6 @@ namespace DataStructure
 			}
 			std::cout << "Index not found" << std::endl;
 		}
-
 	}
 
 	template<class T>
@@ -244,43 +281,69 @@ namespace DataStructure
 	MyVector<T>::MyVector()
 	{
 		m_size = 0;
-		m_capacity = m_size * 2;
-		m_arr = new T[m_capacity];
+		m_capacity = 0;
+		m_arr = nullptr;
 	}
 
 	template<class T>
-	MyVector<T>::MyVector(unsigned int& size)
+	MyVector<T>::MyVector(unsigned int size)
+	{
+		m_capacity = size;
+		m_size = size;
+		m_arr = new T[size];
+	}
+
+	template<class T>
+	MyVector<T>::MyVector(unsigned int size, const T & obj)
 	{
 		m_size = size;
-		m_capacity = size * 2;
-		m_arr = new T[m_capacity];
-
-		for (auto i = 0; i < size; i++)
+		m_capacity = size;
+		m_arr = new T[size];
+		for (unsigned int i = 0; i < size; ++i)
 		{
-			m_arr[i] = i;
+			m_arr[i] = obj;
 		}
 	}
 
-	template<class T>
-	MyVector<T>::MyVector(T* obj)
-	{
-		m_size = 10;
-		m_capacity = m_size * 2;
-		m_arr = new T[m_capacity];
-
-		for (auto it = 0; it < m_size; ++it)
-		{
-			m_arr[it] = obj[it];
-		}
-	}
-
-	template<class T>
+	template<class T> //upd
 	MyVector<T>::MyVector(const MyVector& v)
 	{
 		m_size = v.m_size;
-		m_arr = new T[m_capacity];
+		m_capacity = v.m_capacity;
+		m_arr = new T[m_size];
 
-		std::copy(v.m_arr, v.m_arr + m_size, v.m_arr);
+		for (unsigned int i = 0; i < m_size; ++i)
+		{
+			m_arr[i] = v.m_arr[i];
+		}
+	}
+
+	template<class T>
+	MyVector<T>::MyVector(const MyVector&& v)
+		:m_size{ std::move(v.m_size) }, m_capacity{ std::move(v.m_capacity) },
+		m_arr{ std::move(v.m_arr) }
+	{
+		std::cout << "Move constructor";
+	}
+
+	template<class T>
+	void MyVector<T>::reAlloc(unsigned int capacity)
+	{
+		T* newArray = new T[capacity];
+
+		if (capacity < m_size)
+		{
+			m_size = capacity;
+		}
+
+		for (size_t i = 0; i < m_size; ++i)
+		{
+			newArray[i] = std::move(m_arr[i]);
+		}
+
+		delete[] m_arr;
+		m_arr = newArray;
+		m_capacity = capacity;
 	}
 
 	template<class T>
@@ -289,22 +352,28 @@ namespace DataStructure
 	{
 		if (m_size >= m_capacity)
 		{
-			auto capacity = m_capacity * 2;
-
-			T* result = new T[capacity];
-
-			for (auto i = 0; i < m_size; ++i)
-			{
-				result[i] = m_arr[i];
-			}
-
-			delete[] m_arr;
-			m_arr = result;
-
-			m_capacity = capacity;
+			reAlloc(m_capacity + m_capacity / 2);
 		}
 
 		new (&m_arr[++m_size]) T(std::forward<T>(args)...);
 		return m_arr[++m_size];
+	}
+
+	template<class T>
+	T& MyVector<T>::frontValue()
+	{	
+		return m_arr[0];
+	}
+
+	template<class T>
+	T& MyVector<T>::backValue()
+	{
+		return m_arr[m_size - 1];
+	}
+
+	template<class T>
+	unsigned int MyVector<T>::capacity() const
+	{
+		return m_capacity;
 	}
 }

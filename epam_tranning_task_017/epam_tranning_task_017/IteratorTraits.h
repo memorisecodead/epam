@@ -52,7 +52,7 @@ namespace IteratorTraits
 		pointer operator->() { return m_ptr; }
 		const pointer operator->() const { return m_ptr; }
 
-		reference operator[](int offset) { return m_ptr[offset]; }
+		reference operator[](int offset) { return this->operator[](offset); }
 		const reference operator[](int offset) const { return m_ptr[offset]; }
 
 	protected:
