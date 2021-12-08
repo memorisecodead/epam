@@ -9,17 +9,15 @@ int main()
 {
 	try
 	{
-		/*Student* st = new Student[10];
-		dataPush(st);*/
-		Student st1;
-		Student st2;
-
-		dataPush(&st1);
-		dataPush(&st2);
+		Student st[10];
+		dataPush(st);
 
 		DataStructure::MyVector<Student*> students_vc;
-		students_vc.push_back(&st1);
-		students_vc.push_back(&st2);
+
+		for (size_t i = 0; i < 10; ++i)
+		{
+			students_vc.push_back(&st[i]);
+		}
 		
 		for (auto i = students_vc.begin(); i != students_vc.end(); ++i)
 		{
@@ -28,8 +26,12 @@ int main()
 
 		std::sort(students_vc.begin(), students_vc.end(), compareAge);
 
+		for (auto i : students_vc)
+		{
+			std::cout << (i)->getAge() << std::endl;
+		}
+
 		students_vc.clear();
-		/*delete[] st;*/
 	}
 	catch (const std::exception& e)
 	{

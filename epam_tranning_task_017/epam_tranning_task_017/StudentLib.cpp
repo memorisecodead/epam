@@ -59,9 +59,9 @@ void Student::setAge(unsigned int age)
 	this->m_age = age;
 }
 
-unsigned int& Student::getAge()
+const unsigned int& Student::getAge()
 {
-	return this->getAge();
+	return static_cast<const Student*>(this)->getAge();
 }
 
 const unsigned int & Student::getAge() const
@@ -74,9 +74,9 @@ void Student::setName(std::string name)
 	this->m_name = name;
 }
 
-std::string& Student::getName()
+const std::string& Student::getName()
 {
-	return this->getName();
+	return static_cast<const Student*>(this)->getName();
 }
 
 const std::string& Student::getName() const
@@ -89,9 +89,9 @@ void Student::setSurname(std::string surname)
 	this->m_surname = surname;
 }
 
-std::string& Student::getSurname()
+const std::string& Student::getSurname()
 {
-	return this->getSurname();
+	return static_cast<const Student*>(this)->getSurname();
 }
 
 const std::string& Student::getSurname() const
@@ -104,9 +104,9 @@ void Student::setGroup(std::string group)
 	this->m_group = group;
 }
 
-std::string& Student::getGroup()
+const std::string& Student::getGroup()
 {
-	return this->getGroup();
+	return static_cast<const Student*>(this)->getGroup();
 }
 
 const std::string& Student::getGroup() const
@@ -119,9 +119,9 @@ void Student::setFaculty(std::string faculty)
 	this->m_faculty = faculty;
 }
 
-std::string& Student::getFaculty()
+const std::string& Student::getFaculty()
 {
-	return this->getFaculty();
+	return static_cast<const Student*>(this)->getFaculty();
 }
 
 const std::string& Student::getFaculty() const
@@ -139,7 +139,6 @@ std::ostream& operator<<(std::ostream& out, const Student& st)
 
 bool compareAge (Student * rhs, Student * lhs)
 {
-	/*outputLog("Functor for comapare of student's ages");*/
 	return (*rhs).getAge() >  (*lhs).getAge();
 }
 
@@ -154,60 +153,59 @@ void dataPush(Student* st)
 	st[0].setFaculty("Computer physics");
 	st[0].setGroup("CP_21");
 
+	st[1].setName("Sasha");
+	st[1].setSurname("Apollo");
+	st[1].setAge(19);
+	st[1].setFaculty("Computer physics");
+	st[1].setGroup("CP_41");
 
-	//st[1].m_name = "Sasha";
-	//st[1].m_surname = "Apollo";
-	//st[1].m_age = 19;
-	//st[1].m_faculty = "Computer physics";
-	//st[1].m_group = "CP_41";
+	st[2].setName("Daniel");
+	st[2].setSurname("Pollo");
+	st[2].setAge(17);
+	st[2].setFaculty("Computer physics");
+	st[2].setGroup("CP_11");
 
-	//st[2].m_name = "Daniel";
-	//st[2].m_surname = "Pollo";
-	//st[2].m_age = 17;
-	//st[2].m_faculty = "Computer physics";
-	//st[2].m_group = "CP_11";
+	st[3].setName("Sasha");
+	st[3].setSurname("Drain");
+	st[3].setAge(21);
+	st[3].setFaculty("Computer physics");
+	st[3].setGroup("CP_71");
 
-	//st[3].m_name = "Sasha";
-	//st[3].m_surname = "Drain";
-	//st[3].m_age = 21;
-	//st[3].m_faculty = "Computer physics";
-	//st[3].m_group = "CP_71";
+	st[4].setName("Sasha");
+	st[4].setSurname("Apollo");
+	st[4].setAge(20);
+	st[4].setFaculty("Computer physics");
+	st[4].setGroup("CP_51");
 
-	//st[4].m_name = "Sasha";
-	//st[4].m_surname = "Apollo";
-	//st[4].m_age = 20;
-	//st[4].m_faculty = "Computer physics";
-	//st[4].m_group = "CP_51";
+	st[5].setName("Kristen");
+	st[5].setSurname("Bird");
+	st[5].setAge(20);
+	st[5].setFaculty("Computer physics");
+	st[5].setGroup("CP_51");
 
-	//st[5].m_name = "Kristen";
-	//st[5].m_surname = "Bird";
-	//st[5].m_age = 20;
-	//st[5].m_faculty = "Computer physics";
-	//st[5].m_group = "CP_51";
+	st[6].setName("Akamir");
+	st[6].setSurname("Bagrov");
+	st[6].setAge(18);
+	st[6].setFaculty("Computer physics");
+	st[6].setGroup("CP_41");
 
-	//st[6].m_name = "Akamir";
-	//st[6].m_surname = "Bagrov";
-	//st[6].m_age = 18;
-	//st[6].m_faculty = "Computer physics";
-	//st[6].m_group = "CP_41";
+	st[7].setName("Arina");
+	st[7].setSurname("Paraskevich");
+	st[7].setAge(19);
+	st[7].setFaculty("Computer physics");
+	st[7].setGroup("CP_41");
 
-	//st[7].m_name = "Arina";
-	//st[7].m_surname = "Paraskevich";
-	//st[7].m_age = 19;
-	//st[7].m_faculty = "Computer physics";
-	//st[7].m_group = "CP_41";
+	st[8].setName("Sergey");
+	st[8].setSurname("Mlager");
+	st[8].setAge(26);
+	st[8].setFaculty("Computer physics");
+	st[8].setGroup("CP_101");
 
-	//st[8].m_name = "Sergey";
-	//st[8].m_surname = "Mlager";
-	//st[8].m_age = 26;
-	//st[8].m_faculty = "Computer physics";
-	//st[8].m_group = "CP_101";
-
-	//st[9].m_name = "Sasha";
-	//st[9].m_surname = "Apollo";
-	//st[9].m_age = 28;
-	//st[9].m_faculty = "Computer physics";
-	//st[9].m_group = "CP_121";
+	st[9].setName("Sasha");
+	st[9].setSurname("Apollo");
+	st[9].setAge(28);
+	st[9].setFaculty("Computer physics");
+	st[9].setGroup("CP_121");
 }
 
 void outputLog(Student & st,const char * mess)

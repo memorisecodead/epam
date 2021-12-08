@@ -15,20 +15,19 @@ struct Student
 		(std::ostream & out, const Student & st);
 
 	void setAge(unsigned int age);
-	unsigned int & getAge();
+	const unsigned int & getAge();
 	const unsigned int & getAge() const;
-
 	void setName(std::string name);
-	std::string & getName();
+	const std::string & getName();
 	const std::string & getName() const;
 	void setSurname(std::string surname);
-	std::string & getSurname();
+	const std::string & getSurname();
 	const std::string & getSurname() const;
 	void setGroup(std::string group);
-	std::string & getGroup();
+	const std::string & getGroup();
 	const std::string & getGroup() const;
 	void setFaculty(std::string faculty);
-	std::string & getFaculty();
+	const std::string & getFaculty();
 	const std::string & getFaculty() const;
 
 	~Student();

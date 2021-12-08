@@ -31,7 +31,7 @@ namespace DataStructure
 		MyVector(const MyVector& v);
 		MyVector(const MyVector&& v);
 
-		void reAlloc(unsigned int capacity);
+		void reAlloc();
 
 		//TBD
 		DataStructure::MyVector<T>& operator=(const DataStructure::MyVector<T>& v);
@@ -70,8 +70,8 @@ namespace DataStructure
 		~MyVector();
 	private:
 		T* m_arr;
-		std::size_t m_capacity;
-		std::size_t m_size;
+		unsigned int m_capacity;
+		unsigned int m_size;
 	};
 
 	template<class T>
@@ -84,7 +84,6 @@ namespace DataStructure
 	template<class T>
 	void MyVector<T>::showVector()
 	{
-		std::cout << "Values of vector:" << std::endl;
 		for (int i = 0; i < m_size; i++)
 		{
 			std::cout << m_arr[i] << std::endl;
@@ -107,7 +106,6 @@ namespace DataStructure
 	template<class T>
 	DataStructure::MyVector<T>& MyVector<T>::operator=(const DataStructure::MyVector<T>&& v)
 	{
-		std::cout << "Move assistment operator";
 		std::swap(m_size, v.m_size);
 		std::swap(m_capacity, v.m_capacity);
 		std::swap(m_arr, v.m_arr);
@@ -146,25 +144,25 @@ namespace DataStructure
 	template<class T>
 	void MyVector<T>::push_back(T & value)
 	{
-		if (m_size >= m_capacity)
+		if (m_size == m_capacity)
 		{
-			reserve(m_capacity + 5);
+			m_capacity <<= 2;
+			reAlloc();
 		}
-		m_arr[++m_size] = value;
+		m_arr[m_size] = value;
+		++m_size;
 	}
 
 	template<class T>
 	void MyVector<T>::push_back(T&& value)
 	{
-		if (m_size >= m_capacity)
+		if (m_size == m_capacity)
 		{
-			reserve(m_capacity + 5);
+			m_capacity <<= 2;
+			reAlloc();
 		}
-		/*m_arr[my_size++] = v;
-
-		emplace_back(std::move(value));*/
-		m_arr[++m_size] = std::move(value);
-		
+		m_arr[m_size] = std::move(value);
+		++m_size;
 	}
 
 	template<class T>
@@ -205,24 +203,12 @@ namespace DataStructure
 	template<class T>
 	void MyVector<T>::reserve(unsigned int capacity)
 	{
-		if (m_arr == nullptr)
+		if (capacity > m_capacity)
 		{
-			m_size = 0;
-			m_capacity = 0;
+			m_capacity = capacity;
+			reAlloc();
 		}
-		T* buffer = new T[capacity];
-		unsigned int l_size = capacity < m_size ? capacity : m_size;
-
-		for (unsigned int i = 0; i < l_size; i++)
-		{
-			buffer[i] = m_arr[i];
-		}
-
-		m_capacity = capacity;
-		delete[] m_arr;
-		m_arr = buffer;
 	}
-
 	template<class T>
 	void MyVector<T>::pop_back()
 	{
@@ -254,7 +240,6 @@ namespace DataStructure
 	template<class T>
 	void MyVector<T>::clear()
 	{
-		std::cout << "Destrucor of vector.\n";
 		for (auto i = 0; i < m_size; ++i)
 		{
 			m_arr[i].~T();
@@ -281,8 +266,8 @@ namespace DataStructure
 	MyVector<T>::MyVector()
 	{
 		m_size = 0;
-		m_capacity = 0;
-		m_arr = nullptr;
+		m_capacity = 4;
+		m_arr = new T[m_capacity];
 	}
 
 	template<class T>
@@ -320,30 +305,18 @@ namespace DataStructure
 
 	template<class T>
 	MyVector<T>::MyVector(const MyVector&& v)
-		:m_size{ std::move(v.m_size) }, m_capacity{ std::move(v.m_capacity) },
-		m_arr{ std::move(v.m_arr) }
+		:m_size(std::move(v.m_size)), m_capacity(std::move(v.m_capacity)),
+		m_arr(std::move(v.m_arr))
 	{
-		std::cout << "Move constructor";
 	}
 
 	template<class T>
-	void MyVector<T>::reAlloc(unsigned int capacity)
+	void MyVector<T>::reAlloc()
 	{
-		T* newArray = new T[capacity];
-
-		if (capacity < m_size)
-		{
-			m_size = capacity;
-		}
-
-		for (size_t i = 0; i < m_size; ++i)
-		{
-			newArray[i] = std::move(m_arr[i]);
-		}
-
+		T* temp_arr = new T[m_capacity];
+		std::memcpy(temp_arr, m_arr, m_size * sizeof(T));
 		delete[] m_arr;
-		m_arr = newArray;
-		m_capacity = capacity;
+		m_arr = temp_arr;
 	}
 
 	template<class T>
