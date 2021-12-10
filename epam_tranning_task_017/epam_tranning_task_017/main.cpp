@@ -1,5 +1,4 @@
-﻿#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
-#include <iostream>
+﻿#include <iostream>
 #include <algorithm>
 #include <vector>
 #include "StudentLib.h"

@@ -232,7 +232,7 @@ void TaxiCustom::printAllTaxis()
 	for (auto i = 0; i < m_countOfDriver; ++i)
 	{
 		std::cout << std::endl;
-		std::cout << "Note: " << m_countOfDriver + 1 << std::endl
+		std::cout << "Note: " << i + 1 << std::endl
 			<< notes[i].m_name << std::endl << notes[i].m_surname 
 			<< std::endl << notes[i].m_mark_of_car << std::endl << notes[i].m_taxi_num
 			<< std::endl << std::endl;

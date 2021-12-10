@@ -31,26 +31,23 @@ void customQueue::popValue()
 	unsigned int el_q = 0;
 	el_q = q_arr[q_rend];
 
-	if (q_rend >= q_fbeg)
+	if (q_rend > 0)
 	{
-		q_fbeg = 0;
-		q_rend = 0;
-	}
-	else
-	{
-		++q_rend;
-	}
+		q_arr[--q_fbeg];
+		std::cout << std::endl
+			<< "Value is delete: " << el_q
+			<< std::endl;
 
-	std::cout << std::endl
-		<< "Value is delete: " << el_q
-		<< std::endl;
+		el_q = q_arr[--q_rend];
+	}
 
 	try
 	{
-		if (q_rend >= q_size)
+		if (q_rend >= q_size || q_rend == 0)
 		{
 			throw std::invalid_argument("bad area!");
 		}
+
 	}
 	catch (std::invalid_argument& e)
 	{

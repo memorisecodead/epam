@@ -6,11 +6,11 @@
 
 int main()
 {
-	int count = 10;
-	myVector<int> v(10);
-	std::vector<int> v_default(10);
+	unsigned int count = 10000;
+	DataStructure::MyVector<int> v(count);
+	std::vector<int> v_default(count);
 
-	v.fill_array(v, 10);
+	v.fill(v, count);
 
 	for (auto i = 0; i < count; ++i)
 	{
@@ -18,8 +18,8 @@ int main()
 	}
 
 	v.size();
-	v.shakerSort(count);
-	v.sortOfShell(count);
+	v.shakeSort(count);
+	v.shellSort(count);
 
 	{
 		std::cout << std::endl;
@@ -45,7 +45,7 @@ int main()
 		}
 	}
 
-	v.find(v,4);
+	v.customFind(v,4);
 
 	return 0;
 }

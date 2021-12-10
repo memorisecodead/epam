@@ -59,25 +59,20 @@ template <typename T>
 void customQueue<T>::popValue()
 {
 	T el_q = 0;
-	el_q = q_arr[q_rend];
+	
 
 	if (q_rend >= q_fbeg)
 	{
-		q_fbeg = 0;
-		q_rend = 0;
+		el_q = q_arr[--q_rend];
+		std::cout << std::endl
+			<< "Value is delete: " << el_q
+			<< std::endl;
 	}
-	else
-	{
-		++q_rend;
-	}
-
-	std::cout << std::endl
-		<< "Value is delete: " << el_q
-		<< std::endl;
+	
 
 	try
 	{
-		if (q_rend >= q_size)
+		if (q_rend >= q_size || q_rend == 0)
 		{
 			throw std::invalid_argument("bad area!");
 		}

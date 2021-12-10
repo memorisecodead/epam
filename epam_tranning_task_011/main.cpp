@@ -19,13 +19,13 @@ int main()
 
 	TaxiCustom taxi_obj;
 
-	myVector<Note> vnt(static_cast<unsigned int&&>(index));
+	DataStructure::MyVector<Note> vnt(static_cast<unsigned int&&>(index));
 
 	Note note0("Stas", "Apollo", "BMW", 6666);
 	Note note1("Sasha", "Unnior", "BMW", 9999);
 	Note note2("Alexa", "Paragraph", "Audi", 6969);
 
-	while (true) //;;
+	while (true) 
 	{
 		std::cout <<
 			"Taxi:\n"
@@ -50,31 +50,14 @@ int main()
 			case (unsigned int)(ChoiceType::AddNote) :
 			{
 				system("cls");
-			/*	unsigned int humans_count;*/
-				//std::cout << "Enter amount of persons: ";
-				//std::cin >> humans_count;
-				//std::cout << std::endl;
-				//
-				//for (auto i = 0; i < humans_count; ++i)
-				//{
-				//	/*std::cout << "Name:\t";
-				//	std::cin >> note.m_name;
-				//	std::cout << "Surname:\t";x
-				//	std::cin >> note.m_surname;
-				//	std::cout << "Mark of car:\t";
-				//	std::cin >> note.m_mark_of_car;
-				//	std::cout << "Taxi nums:\t";
-				//	std::cin >> note.m_taxi_num;*/
-				//	
-				//	
-				//}
+	
 				taxi_obj.addNote(note0);
 				taxi_obj.addNote(note1);
 				taxi_obj.addNote(note2);
 
 				vnt.push_back(note0);
 				vnt.push_back(note1);
-				vnt.insert(0, note2);
+				vnt.push_back(note2);
 
 				system("pause");
 				system("cls");
@@ -115,7 +98,7 @@ int main()
 				std::cin >> index;
 				std::cout << std::endl;
 				taxi_obj.deleteNote(index);
-				vnt.pop_back(index);
+				vnt.pop_back();
 				
 				system("pause");
 				system("cls");
@@ -163,9 +146,11 @@ int main()
 
 			case(unsigned int)(ChoiceType::Exit) :
 			{
+				vnt.clear();
 				return 0;
 			}
 			break;
 		}
 	}
+	return 0;
 }

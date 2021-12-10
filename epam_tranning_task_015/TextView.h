@@ -47,10 +47,11 @@ TextView<T>::TextView(const TextView<T> & other)
 }
 
 template<class T>
-TextView<T>::TextView(const TextView<T> && other) noexcept
+TextView<T>::TextView(const TextView<T>&& other) noexcept
+	:t_chr(std::move(other.chr))
 {
 	outputLog("Move constructor(&&)");
-	t_chr = std::move(other.t_chr);
+	other.t_chr = nullptr;
 }
 
 template<class T>
@@ -83,6 +84,6 @@ TextView<T> & TextView<T>::operator=(TextView<T> && other)
 template<class T>
 void TextView<T>::outputLog(const char * mess)
 {
-	std::cout << "[" << this << "] " 
+	std::cout << "[" << this << "] "
 		<< mess << "\n";
 }

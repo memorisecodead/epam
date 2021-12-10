@@ -42,6 +42,17 @@ int main()
 	std::cout << std::endl;
 	qq.isEmpty();
 	qq.popValue();
+	qq.popValue();
+	qq.popValue();
+	qq.popValue();
+	qq.popValue();
+	qq.popValue();
+	qq.popValue();
+	qq.popValue();
+	qq.popValue();
+	qq.popValue();
+	qq.popValue();
+	qq.popValue();
 
 	return 0;
 }
