@@ -50,8 +50,6 @@ namespace DataStructure
 
 		void push_back(T& value); //UPD
 		void push_back(T&& value); //UPD
-		template<class ...Args>
-		T& emplace_back(Args &&... args);
 		void pop_back();
 		void insert(IteratorTraits::Iterator<T> index, unsigned int size, const T& value);
 		MyVector<T> insert(const int index, T& value);
@@ -161,6 +159,7 @@ namespace DataStructure
 			m_capacity <<= 2;
 			reAlloc();
 		}
+
 		m_arr[m_size] = std::move(value);
 		++m_size;
 	}
@@ -317,19 +316,6 @@ namespace DataStructure
 		std::memcpy(temp_arr, m_arr, m_size * sizeof(T));
 		delete[] m_arr;
 		m_arr = temp_arr;
-	}
-
-	template<class T>
-	template<class ...Args>
-	T& MyVector<T>::emplace_back(Args && ...args)
-	{
-		if (m_size >= m_capacity)
-		{
-			reAlloc(m_capacity + m_capacity / 2);
-		}
-
-		new (&m_arr[++m_size]) T(std::forward<T>(args)...);
-		return m_arr[++m_size];
 	}
 
 	template<class T>
